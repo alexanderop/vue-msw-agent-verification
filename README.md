@@ -69,6 +69,8 @@ Handlers don't return fixed fixtures. They read `server/src/mocks/store.ts` on e
 - `pokemon`: what PokeAPI "knows"
 - `scenarios`: how each API behaves (`pokeapi: ok | slow | down`, `translations: ok | rate-limited | down`)
 
+**Base mocks are deterministic.** `defaultState()` in `store.ts` is committed to the repo: the same two Pokémon and every scenario `ok`, on every start. Seeds go on top at runtime, `mockctl reset` drops them, and `mockctl doctor` warns when the state isn't the base. A seed without `--id` derives its id from the name, so the same command always produces the same result.
+
 `server/src/mocks/control.ts` exposes that store as `/__mocks/*`. It's only mounted in mock mode, so a real or production server doesn't have it. It rejects writes that would be ignored, for example seeding Pokémon while PokeAPI is real.
 
 ### 3. `mockctl`: a CLI an agent can use without reading source

@@ -4,9 +4,16 @@ import { mockStore, SCENARIOS, sprite, type MockPokemon, type MockState } from '
 
 class BadRequest extends Error {}
 
+// Same name, same id: a seed without --id gives the same result on every run.
+function idFromName(name: string) {
+  let hash = 0
+  for (const char of name) hash = (hash * 31 + char.charCodeAt(0)) % 90_000
+  return 10_000 + hash
+}
+
 function parsePokemon(name: string, body: unknown, existing?: MockPokemon): MockPokemon {
   const input = (body ?? {}) as Partial<Record<keyof MockPokemon, unknown>>
-  const id = input.id ?? existing?.id ?? Math.floor(10_000 + Math.random() * 90_000)
+  const id = input.id ?? existing?.id ?? idFromName(name)
   if (typeof id !== 'number' || !Number.isInteger(id)) throw new BadRequest('"id" must be an integer')
 
   const types = input.types ?? existing?.types ?? ['normal']
@@ -21,7 +28,7 @@ function parsePokemon(name: string, body: unknown, existing?: MockPokemon): Mock
     height: Number(input.height ?? existing?.height ?? 10),
     weight: Number(input.weight ?? existing?.weight ?? 100),
     description: String(input.description ?? existing?.description ?? `A seeded test Pokémon called ${name}.`),
-    // Only real PokeAPI ids have a sprite. A random id gets no image instead of a broken one.
+    // Only real PokeAPI ids have a sprite. A derived id gets no image instead of a broken one.
     image: input.image === null ? null : String(input.image ?? existing?.image ?? (input.id === undefined ? '' : sprite(id))) || null,
   }
 }

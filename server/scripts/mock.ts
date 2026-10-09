@@ -106,7 +106,7 @@ program
   .command('seed')
   .description('create or update a Pokémon served by the mocked PokeAPI')
   .argument('<name>', 'Pokémon name, e.g. charizard')
-  .option('--id <n>', 'Pokédex id (random if omitted)', integer)
+  .option('--id <n>', 'Pokédex id (derived from the name if omitted)', integer)
   .option('--types <list>', 'comma-separated types', (v: string) => v.split(',').map((t) => t.trim()))
   .option('--description <text>', 'flavor text (gets the Yoda translation)')
   .option('--height <n>', 'height in decimetres', integer)

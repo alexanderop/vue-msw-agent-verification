@@ -21,7 +21,7 @@ Search a name that exists.
 agent-browser fill 'input[aria-label="Pokémon name"]' testmon
 agent-browser press Enter
 agent-browser wait '[data-testid=pokemon-card]'
-agent-browser get text '[data-testid=pokemon-card] h2'        # #<random id> Testmon
+agent-browser get text '[data-testid=pokemon-card] h2'        # #<id derived from the name> Testmon
 agent-browser get count '[data-testid=pokemon-card] img'      # 0
 ```
 
@@ -29,6 +29,6 @@ With an image: `./bin/mockctl seed charizard --id 6 --types fire,flying` → `im
 
 ## Gotchas
 
-- Without `--id`, `seed` picks a random 5-digit id. Pass `--id` when the id is part of what you assert.
+- Without `--id`, `seed` derives a 5-digit id from the name, so the same seed gives the same id on every run. Pass `--id` when you want a real Pokédex number (and its sprite).
 - Sprites load from raw.githubusercontent.com, so with no network the image shows as broken even though the DOM is correct. Assert the `src` attribute, not pixels.
 - Real PokeAPI text is uppercase "POKéMON". Mock fixtures say "Pokémon".
