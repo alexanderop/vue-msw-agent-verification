@@ -1,0 +1,11 @@
+{
+  "name": "vue-node-msw-pokemon",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter server --filter web dev",
+    "dev:mock": "MOCK_APIS=all pnpm dev",
+    "test": "pnpm --filter server test",
+    "mock": "node server/scripts/mock.ts"
+  }
+}
